@@ -109,6 +109,19 @@
   <t>Servers MUST reject a command which attempts to reverse a &lt;reverse&gt; command.</t>
 </section>
 
+<section title="EPP &lt;poll&gt; command">
+  <t>Servers which return 1001 response codes to &lt;reverse&gt; commands MUST notify clients of the outcome of the out-of-band process via the EPP message queue. The format of the &lt;poll&gt; message is as follows.</t>
+  <t>The &lt;resData&gt; element of the &lt;poll&gt; response contains a &lt;panData&gt; element which contains a &lt;paTRID&gt; element. This element contains an OPTIONAL &lt;clTRID&gt; and a &gt;svTRID&gt; which together identify the &lt;reverse&gt; command submitted by the client. The &lt;paTRID&gt; element has a MANDATORY "paResult" element which is a boolean, and which indicates the outcome of the offline review.</t>
+  <t>The &lt;msg&gt; element contains a human-readable message describing the outcome of the review.</t>
+
+  <t>Example of a &lt;poll&gt; message:</t>
+
+  <figure>
+    <artwork>
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="examples/poll-response.txt" parse="text" /></artwork>
+  </figure>
+</section>
+
 <section title="Formal Syntax">
   <t>An EPP object mapping is specified in XML Schema notation. The formal syntax presented here is a complete schema representation of the object mapping suitable for automated validation of EPP XML instances.</t>
   <t>Copyright (c) 2015 IETF Trust and the persons identified as authors of the code. All rights reserved.</t>

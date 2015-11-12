@@ -15,7 +15,7 @@
     namespace="urn:ietf:params:xml:ns:epp-1.0"
     schemaLocation="epp-1.0.xsd"/>
 
-    <!-- client element -->
+  <!-- command element -->
   <element name="reverse" type="reverse:reverseType"/>
 
   <complexType name="reverseType">
@@ -35,4 +35,23 @@
       <element name="svTRID" type="epp:trIDStringType" />
     </sequence>
   </complexType>
+
+  <!-- poll response element -->
+  <element name="panData" type="reverse:panDataType" />
+
+  <complexType name="panDataType">
+    <sequence>
+      <element name="paTRID" type="reverse:paTRIDType" />
+      <element name="paDate" type="dateTime" />
+    </sequence>
+  </complexType>
+
+  <complexType name="paTRIDType">
+    <complexContent>
+      <extension base="reverse:trIDType">
+        <attribute name="paResult" type="boolean" use="required" />
+      </extension>
+    </complexContent>
+  </complexType>
+
 </schema>

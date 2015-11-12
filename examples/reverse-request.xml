@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
   <extension>
-    <reverse xmlns="urn:ietf:params:xml:ns:reverse-0.1">
-      <reason>Reversing an accidental double renewal.</reason>
-      <trID>
-        <clTRID>ABC-10001</clTRID>
-        <svTRID>54321-XYZ</svTRID>
-      </trID>
-      <clTRID>ABC-12345</clTRID>
-    </reverse>
+    <reverse:reverse
+      xmlns:reverse="urn:ietf:params:xml:ns:reverse-0.1">
+      <reverse:reason>Reversing an accidental
+      double renewal.</reverse:reason>
+      <reverse:trID>
+        <reverse:clTRID>ABC-10001</reverse:clTRID>
+        <reverse:svTRID>54321-XYZ</reverse:svTRID>
+      </reverse:trID>
+      <reverse:clTRID>ABC-12345</reverse:clTRID>
+    </reverse:reverse>
   </extension>
 </epp>
