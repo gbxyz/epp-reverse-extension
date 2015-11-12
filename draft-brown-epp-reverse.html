@@ -145,7 +145,7 @@
 <tr><td class="header">Internet Engineering Task Force</td><td class="header">G. Brown</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">CentralNic Group plc</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">J. Frakes</td></tr>
-<tr><td class="header">Expires: May 14, 2016</td><td class="header">November 11, 2015</td></tr>
+<tr><td class="header">Expires: May 15, 2016</td><td class="header">November 12, 2015</td></tr>
 </table></td></tr></table>
 <h1><br />Command Reversal Extension for the Extensible Provisioning Protocol (EPP)<br />draft-brown-epp-reverse-00</h1>
 
@@ -168,7 +168,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on May 14, 2016.</p>
+This Internet-Draft will expire on May 15, 2016.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -221,19 +221,18 @@ Introduction</h3>
 </p>
 <p>EPP clients have some options to remedy such mistakes: for example, they can send a &lt;delete&gt; command to delete an object created in error (and may receive a refund if they do so within some grace period), cancel a previous &lt;transfer&gt; request, or send an &lt;update&gt; command to amend the properties of an object.
 </p>
-<p>However, there are some circumstances where it is not possible to correct an error by using an existing command. For example, despite EPP's built-in idempotency protections, clients may inadvertently send multiple &lt;renew&gt; commands (because their implementation queries the server for a domain's expiry date, thereby defeating the idempotency measures built into EPP) or specify an incorrect period (e.g. a two-year renewal which should have only been for one year).
+<p>However, there are some circumstances where it is not possible to correct an error by using an existing command. For example, clients may inadvertently send multiple &lt;renew&gt; commands (because their implementation queries the server for a domain's expiry date, thereby defeating the idempotency measures built into EPP) or specify an incorrect period (e.g. a two-year renewal which should have only been for one year).
 </p>
 <p>As another example, a client may perform an &lt;update&gt; command on an object, but keep no record of the previous state of the object, preventing them from correcting the error.
 </p>
-<p>The extension described in this document attempts to provide an additional remedy for such cases, by providing a way for a client to request that a previous command be reversed. In order to reverse a command, the client need only record the &lt;svTRID&gt; returned by the server in its response.
+<p>None of the mistakes in the examples above can be fixed using the existing EPP command repertoire. The extension described in this document attempts to provide an additional remedy for such cases, by providing a way for a client to request that a previous command be reversed. In order to reverse a command, the client need only record the &lt;svTRID&gt; returned by the server in its response to the command.
 </p>
 <a name="anchor2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
 Conventions Used in This Document</h3>
 
-<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in 
-    <a class='info' href='#RFC2119'>RFC 2119<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a> [RFC2119].
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a class='info' href='#RFC2119'>RFC 2119<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a> [RFC2119].
 </p>
 <p>XML is case sensitive. Unless stated otherwise, XML specifications and examples provided in this document MUST be interpreted in the character case presented in order to develop a conforming implementation.
 </p>
@@ -286,11 +285,11 @@ C: &lt;/epp&gt;
 <a name="rfc.section.3"></a><h3>3.&nbsp;
 Server Handling of Reverse Commands</h3>
 
-<p>Which commands a server will accept &lt;reverse&gt; commands for is a matter of server policy (which server operators should provide to client operators). If a server acceps a &lt;reverse&gt; command, it MUST respond with a 1000 or 1001 result code. If the server rejects the command, it MUST respond with a 2400 result code.
+<p>Which commands a server will accept &lt;reverse&gt; commands for is a matter of server policy (which server operators should provide to client operators). If a server acceps a &lt;reverse&gt; command, it MUST respond with a 1000 or 1001 result code. If the server returns a 1001 response, the client MUST be notified of outcome of the offline process via the EPP message queue. If the server rejects the command, it MUST respond with a 2400 result code.
 </p>
-<p>Servers MUST NOT allow a client to reverse a command that it did not originally submit. Servers SHOULD implement policies that flag &lt;reverse&gt; commands for offline processing where changes might have security implications (such as those which would remove client-assigned status codes, DNSSEC records, etc).
+<p>Servers MUST NOT allow a client to reverse a command that it did not originally submit. Servers SHOULD implement policies that flag &lt;reverse&gt; commands for offline processing where changes might have security implications (such as those which would remove client-assigned status codes, alter authorisation information or add or remove <a class='info' href='#RFC5910'>secDNS<span> (</span><span class='info'>Gould, J. and S. Hollenbeck, &ldquo;Domain Name System (DNS) Security Extensions Mapping for the Extensible Provisioning Protocol (EPP),&rdquo; May&nbsp;2010.</span><span>)</span></a> [RFC5910] records, etc).
 </p>
-<p>Servers MUST reject a command which reverses a &lt;reverse&gt; command.
+<p>Servers MUST reject a command which attempts to reverse a &lt;reverse&gt; command.
 </p>
 <a name="anchor5"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -415,6 +414,8 @@ EPP Extension Registry</h3>
 <td class="author-text">Mealling, M., &ldquo;<a href="http://www.rfc-editor.org/info/rfc3688">The IETF XML Registry</a>,&rdquo; BCP&nbsp;81, RFC&nbsp;3688, DOI&nbsp;10.17487/RFC3688, January&nbsp;2004.</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC5730">[RFC5730]</a></td>
 <td class="author-text">Hollenbeck, S., &ldquo;<a href="http://www.rfc-editor.org/info/rfc5730">Extensible Provisioning Protocol (EPP)</a>,&rdquo; STD&nbsp;69, RFC&nbsp;5730, DOI&nbsp;10.17487/RFC5730, August&nbsp;2009.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5910">[RFC5910]</a></td>
+<td class="author-text">Gould, J. and S. Hollenbeck, &ldquo;<a href="http://www.rfc-editor.org/info/rfc5910">Domain Name System (DNS) Security Extensions Mapping for the Extensible Provisioning Protocol (EPP)</a>,&rdquo; RFC&nbsp;5910, DOI&nbsp;10.17487/RFC5910, May&nbsp;2010.</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC7451">[RFC7451]</a></td>
 <td class="author-text">Hollenbeck, S., &ldquo;<a href="http://www.rfc-editor.org/info/rfc7451">Extension Registry for the Extensible Provisioning Protocol</a>,&rdquo; RFC&nbsp;7451, DOI&nbsp;10.17487/RFC7451, February&nbsp;2015.</td></tr>
 </table>

@@ -4,7 +4,7 @@
 Internet Engineering Task Force                                 G. Brown
 Internet-Draft                                      CentralNic Group plc
 Intended status: Standards Track                               J. Frakes
-Expires: May 14, 2016                                  November 11, 2015
+Expires: May 15, 2016                                  November 12, 2015
 
 
   Command Reversal Extension for the Extensible Provisioning Protocol
@@ -31,7 +31,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 14, 2016.
+   This Internet-Draft will expire on May 15, 2016.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Brown & Frakes            Expires May 14, 2016                  [Page 1]
+Brown & Frakes            Expires May 15, 2016                  [Page 1]
 
 Internet-Draft     Command Reversal Extension for EPP      November 2015
 
@@ -108,7 +108,7 @@ Table of Contents
 
 
 
-Brown & Frakes            Expires May 14, 2016                  [Page 2]
+Brown & Frakes            Expires May 15, 2016                  [Page 2]
 
 Internet-Draft     Command Reversal Extension for EPP      November 2015
 
@@ -128,22 +128,23 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
    amend the properties of an object.
 
    However, there are some circumstances where it is not possible to
-   correct an error by using an existing command.  For example, despite
-   EPP's built-in idempotency protections, clients may inadvertently
-   send multiple <renew> commands (because their implementation queries
-   the server for a domain's expiry date, thereby defeating the
-   idempotency measures built into EPP) or specify an incorrect period
-   (e.g. a two-year renewal which should have only been for one year).
+   correct an error by using an existing command.  For example, clients
+   may inadvertently send multiple <renew> commands (because their
+   implementation queries the server for a domain's expiry date, thereby
+   defeating the idempotency measures built into EPP) or specify an
+   incorrect period (e.g. a two-year renewal which should have only been
+   for one year).
 
    As another example, a client may perform an <update> command on an
    object, but keep no record of the previous state of the object,
    preventing them from correcting the error.
 
-   The extension described in this document attempts to provide an
-   additional remedy for such cases, by providing a way for a client to
-   request that a previous command be reversed.  In order to reverse a
-   command, the client need only record the <svTRID> returned by the
-   server in its response.
+   None of the mistakes in the examples above can be fixed using the
+   existing EPP command repertoire.  The extension described in this
+   document attempts to provide an additional remedy for such cases, by
+   providing a way for a client to request that a previous command be
+   reversed.  In order to reverse a command, the client need only record
+   the <svTRID> returned by the server in its response to the command.
 
 1.1.  Conventions Used in This Document
 
@@ -160,14 +161,15 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
    "urn:ietf:params:xml:ns:reverse-0.1".  The XML namespace prefix
    "reverse" is used, but implementations MUST NOT depend on it and
    instead employ a proper namespace-aware XML parser and serializer to
-   interpret and output the XML documents.
 
 
 
-Brown & Frakes            Expires May 14, 2016                  [Page 3]
+Brown & Frakes            Expires May 15, 2016                  [Page 3]
 
 Internet-Draft     Command Reversal Extension for EPP      November 2015
 
+
+   interpret and output the XML documents.
 
    (Note to RFC Editor: remove the following paragraph before
    publication as an RFC.)
@@ -205,6 +207,24 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
 
    Example <reverse> request frame:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Brown & Frakes            Expires May 15, 2016                  [Page 4]
+
+Internet-Draft     Command Reversal Extension for EPP      November 2015
+
+
    C: <?xml version="1.0" encoding="UTF-8"?>
    C: <epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
    C:   <extension>
@@ -217,14 +237,6 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
    C:       <clTRID>ABC-12345</clTRID>
    C:     </reverse>
    C:   </extension>
-
-
-
-Brown & Frakes            Expires May 14, 2016                  [Page 4]
-
-Internet-Draft     Command Reversal Extension for EPP      November 2015
-
-
    C: </epp>
 
 
@@ -233,16 +245,20 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
    Which commands a server will accept <reverse> commands for is a
    matter of server policy (which server operators should provide to
    client operators).  If a server acceps a <reverse> command, it MUST
-   respond with a 1000 or 1001 result code.  If the server rejects the
+   respond with a 1000 or 1001 result code.  If the server returns a
+   1001 response, the client MUST be notified of outcome of the offline
+   process via the EPP message queue.  If the server rejects the
    command, it MUST respond with a 2400 result code.
 
    Servers MUST NOT allow a client to reverse a command that it did not
    originally submit.  Servers SHOULD implement policies that flag
    <reverse> commands for offline processing where changes might have
    security implications (such as those which would remove client-
-   assigned status codes, DNSSEC records, etc).
+   assigned status codes, alter authorisation information or add or
+   remove secDNS [RFC5910] records, etc).
 
-   Servers MUST reject a command which reverses a <reverse> command.
+   Servers MUST reject a command which attempts to reverse a <reverse>
+   command.
 
 
 4.  Formal Syntax
@@ -257,6 +273,14 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
 
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions
+
+
+
+Brown & Frakes            Expires May 15, 2016                  [Page 5]
+
+Internet-Draft     Command Reversal Extension for EPP      November 2015
+
+
    are met:
 
    o  Redistributions of source code must retain the above copyright
@@ -273,14 +297,6 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
       permission.
 
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-
-
-
-Brown & Frakes            Expires May 14, 2016                  [Page 5]
-
-Internet-Draft     Command Reversal Extension for EPP      November 2015
-
-
    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT
@@ -316,23 +332,7 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Brown & Frakes            Expires May 14, 2016                  [Page 6]
+Brown & Frakes            Expires May 15, 2016                  [Page 6]
 
 Internet-Draft     Command Reversal Extension for EPP      November 2015
 
@@ -388,7 +388,7 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
 
 
 
-Brown & Frakes            Expires May 14, 2016                  [Page 7]
+Brown & Frakes            Expires May 15, 2016                  [Page 7]
 
 Internet-Draft     Command Reversal Extension for EPP      November 2015
 
@@ -444,7 +444,7 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
 
 
 
-Brown & Frakes            Expires May 14, 2016                  [Page 8]
+Brown & Frakes            Expires May 15, 2016                  [Page 8]
 
 Internet-Draft     Command Reversal Extension for EPP      November 2015
 
@@ -454,6 +454,12 @@ Internet-Draft     Command Reversal Extension for EPP      November 2015
    [RFC5730]  Hollenbeck, S., "Extensible Provisioning Protocol (EPP)",
               STD 69, RFC 5730, DOI 10.17487/RFC5730, August 2009,
               <http://www.rfc-editor.org/info/rfc5730>.
+
+   [RFC5910]  Gould, J. and S. Hollenbeck, "Domain Name System (DNS)
+              Security Extensions Mapping for the Extensible
+              Provisioning Protocol (EPP)", RFC 5910, DOI 10.17487/
+              RFC5910, May 2010,
+              <http://www.rfc-editor.org/info/rfc5910>.
 
    [RFC7451]  Hollenbeck, S., "Extension Registry for the Extensible
               Provisioning Protocol", RFC 7451, DOI 10.17487/RFC7451,
@@ -494,11 +500,5 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-Brown & Frakes            Expires May 14, 2016                  [Page 9]
+Brown & Frakes            Expires May 15, 2016                  [Page 9]
 
