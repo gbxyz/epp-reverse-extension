@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+
+  <!-- when the namespace version bumps, update this and it will update
+    everywhere -->
+  <!ENTITY VERSION "0.1">
+
+  <!ENTITY I-D.narten-iana-considerations-rfc2434bis SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.narten-iana-considerations-rfc2434bis.xml">
+  
+  <!ENTITY RFC2119 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+  
+  <!ENTITY RFC3688 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml">
+
+  <!ENTITY RFC5730 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5730.xml">
+
+  <!ENTITY RFC7451 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7451.xml">
+
+]>
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?>
+<?rfc strict="yes" ?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes" ?>
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc comments="yes" ?>
+<?rfc inline="yes" ?>
+<rfc category="std" docName="draft-brown-epp-reverse-00" ipr="trust200902">
+  <front>
+    <title abbrev="Command Reversal Extension for EPP">Command Reversal Extension for the Extensible Provisioning Protocol (EPP)</title>
+    <author fullname="Gavin Brown" initials="G" surname="Brown">
+      <organization>CentralNic Group plc</organization>
+      <address>
+        <postal>
+          <street>35-39 Moorgate</street>
+          <city>London</city>
+          <region>England</region>
+          <code>EC2R 6AR</code>
+          <country>GB</country>
+        </postal>
+        <phone>+44 20 33 88 0600</phone>
+        <email>gavin.brown@centralnic.com</email>
+        <uri>https://www.centralnic.com</uri>
+      </address>
+    </author>
+    <author fullname="Jothan Frakes" initials="J" surname="Frakes">
+      <address>
+        <email>jothan@jothan.com</email>
+        <uri>http://jothan.com</uri>
+      </address>
+    </author>
+    <date month="November" year="2015" />
+    <area>Applications</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+    <keyword>EPP, XML</keyword>
+    <abstract>
+      <t>This document describes an Extensible Provisioning Protocol (EPP) extension mapping for reversing previous EPP commands.</t>
+    </abstract>
+  </front>
+  <middle>
+
+<section title="Introduction">
+
+  <t>The Extensible Provisioning Protocol (EPP) provides a way for clients to create and update objects in a central repository. Usually, the commands that a client sends to a server will have been initiated upon request of a human being. As a result, occasionally a command is sent which contains an error.</t>
+  <t>EPP clients have some options to remedy such mistakes: for example, they can send a &lt;delete&gt; command to delete an object created in error (and may receive a refund if they do so within some grace period), cancel a previous &lt;transfer&gt; request, or send an &lt;update&gt; command to amend the properties of an object.</t>
+  <t>However, there are some circumstances where it is not possible to correct an error by using an existing command. For example, despite EPP's built-in idempotency protections, clients may inadvertently send multiple &lt;renew&gt; commands (because their implementation queries the server for a domain's expiry date, thereby defeating the idempotency measures built into EPP) or specify an incorrect period (e.g. a two-year renewal which should have only been for one year).</t>
+  <t>As another example, a client may perform an &lt;update&gt; command on an object, but keep no record of the previous state of the object, preventing them from correcting the error.</t>
+  <t>The extension described in this document attempts to provide an additional remedy for such cases, by providing a way for a client to request that a previous command be reversed. In order to reverse a command, the client need only record the &lt;svTRID&gt; returned by the server in its response.</t>
+
+  <section title="Conventions Used in This Document">
+    <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in 
+    <xref target="RFC2119">RFC 2119</xref>.</t>
+    <t>XML is case sensitive. Unless stated otherwise, XML specifications and examples provided in this document MUST be interpreted in the character case presented in order to develop a conforming implementation.</t>
+    <t>"reverse" is used as an abbreviation for "urn:ietf:params:xml:ns:reverse-&VERSION;". The XML namespace prefix "reverse" is used, but implementations MUST NOT depend on it and instead employ a proper namespace-aware XML parser and serializer to interpret and output the XML documents.</t>
+    <t>(Note to RFC Editor: remove the following paragraph before publication as an RFC.)</t>
+    <t>The XML namespace prefix above contains a version number, specifically "&VERSION;". This version number will increment with successive versions of this document, and will reach 1.0 if and when this document is published as an RFC. This permits clients to distinguish which version of the extension a server has implemented.</t>
+  </section>
+</section>
+
+<section title="Extension Elements">
+
+  <t>This specification provides a new EPP command, called &lt;reverse&gt;. As the set of EPP command verbs cannot be updated without updating the core EPP specifications, this command is implemented as an extension.</t>
+
+  <t>When a client wants to reverse a previous command, it sends an EPP command frame containing only an &lt;extension&gt; element. The &lt;extension&gt; element contains a &lt;reverse&gt; element, which in turn contains the details of the command the client wishes to reverse. The &lt;reverse&gt; element has the following child elements:</t>
+
+  <t><list style="hanging">
+    <t>An OPTIONAL &lt;reason&gt; element which contains a human-readable explanation of why the client is submitting the request. The server MAY require inclusion of a &lt;reason&gt; element depending on its own policy.</t>
+    <t>A &lt;trID&gt; element which uniquely identifies the command that the client wishes to reverse. The &lt;trID&gt; element is derived from the element of the same name in <xref target="RFC5730"/>.</t>
+    <t>An OPTIONAL &lt;clTRID&gt; element that uniquely identifies this command to the server.</t>
+  </list></t>
+
+  <t>Example &lt;reverse&gt; request frame:</t>
+
+  <figure>
+  <artwork>
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="examples/reverse-request.txt" parse="text" /></artwork>
+  </figure>
+</section>
+
+<section title="Server Handling of Reverse Commands">
+  <t>Which commands a server will accept &lt;reverse&gt; commands for is a matter of server policy (which server operators should provide to client operators). If a server acceps a &lt;reverse&gt; command, it MUST respond with a 1000 or 1001 result code. If the server rejects the command, it MUST respond with a 2400 result code.</t>
+
+  <t>Servers MUST NOT allow a client to reverse a command that it did not originally submit. Servers SHOULD implement policies that flag &lt;reverse&gt; commands for offline processing where changes might have security implications (such as those which would remove client-assigned status codes, DNSSEC records, etc).</t>
+
+  <t>Servers MUST reject a command which reverses a &lt;reverse&gt; command.</t>
+</section>
+
+<section title="Formal Syntax">
+  <t>An EPP object mapping is specified in XML Schema notation. The formal syntax presented here is a complete schema representation of the object mapping suitable for automated validation of EPP XML instances.</t>
+  <t>Copyright (c) 2015 IETF Trust and the persons identified as authors of the code. All rights reserved.</t>
+  <t>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</t>
+  <t><list style="symbols">
+    <t>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</t>
+    <t>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</t>
+    <t>Neither the name of Internet Society, IETF or IETF Trust, nor the names of specific contributors, may be used to endorse or promote products derived from this software without specific prior written permission.</t>
+  </list></t>
+  <t>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</t>
+  <figure>
+  <artwork>
+BEGIN 
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="reverse.xsd" parse="text" />END</artwork>
+  </figure>
+</section>
+
+<section anchor="Security" title="Security Considerations">
+  <t>The mapping extensions described in this document do not provide any security services beyond those described by <xref target="RFC5730">EPP</xref>, and protocol layers used by EPP. The security considerations described in these other specifications apply to this specification as well.</t>
+</section>
+
+<section anchor="IANA" title="IANA Considerations">
+  <section title="XML Namespace">
+    <t>This document uses URNs to describe XML namespaces and XML schemas conforming to a registry mechanism described in 
+    <xref target="RFC3688" />. The following URI assignment is requested of IANA:</t>
+    <t>URI: urn:ietf:params:xml:ns:reverse-&VERSION;</t>
+    <t>Registrant Contact: See the "Author's Address" section of this document.</t>
+    <t>XML: See the "Formal Syntax" section of this document.</t>
+  </section>
+  <section title="EPP Extension Registry">
+    <t>The EPP extension described in this document should be registered by the IANA in the EPP Extension Registry described in 
+    <xref target="RFC7451" />. The details of the registration are as follows:</t>
+    <t>Name of Extension: EPP Reverse Extension</t>
+    <t>Document status: Standards Track</t>
+    <t>Reference: (insert reference to RFC version of this document)</t>
+    <t>Registrant Name and Email Address: See the "Author's Address" section of this document.</t>
+    <t>TLDs: any</t>
+    <t>IPR Disclosure: none</t>
+    <t>Status: active</t>
+    <t>Notes: none</t>
+  </section>
+</section>
+
+  </middle>
+  <back>
+    <references title="Normative References">
+      &RFC2119;
+      &RFC3688;
+      &RFC5730;
+      &RFC7451;
+    </references>
+  </back>
+</rfc>

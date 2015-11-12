@@ -1,0 +1,450 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>Command Reversal Extension for the Extensible Provisioning Protocol (EPP)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Command Reversal Extension for the Extensible Provisioning Protocol (EPP)">
+<meta name="keywords" content="EPP, XML">
+<meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Internet Engineering Task Force</td><td class="header">G. Brown</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">CentralNic Group plc</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">J. Frakes</td></tr>
+<tr><td class="header">Expires: May 14, 2016</td><td class="header">November 11, 2015</td></tr>
+</table></td></tr></table>
+<h1><br />Command Reversal Extension for the Extensible Provisioning Protocol (EPP)<br />draft-brown-epp-reverse-00</h1>
+
+<h3>Abstract</h3>
+
+<p>This document describes an Extensible Provisioning Protocol (EPP) extension mapping for reversing previous EPP commands.
+</p>
+<h3>Status of this Memo</h3>
+<p>
+This Internet-Draft is submitted  in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+This Internet-Draft will expire on May 14, 2016.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2015 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#anchor1">1.</a>&nbsp;
+Introduction<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">1.1.</a>&nbsp;
+Conventions Used in This Document<br />
+<a href="#anchor3">2.</a>&nbsp;
+Extension Elements<br />
+<a href="#anchor4">3.</a>&nbsp;
+Server Handling of Reverse Commands<br />
+<a href="#anchor5">4.</a>&nbsp;
+Formal Syntax<br />
+<a href="#Security">5.</a>&nbsp;
+Security Considerations<br />
+<a href="#IANA">6.</a>&nbsp;
+IANA Considerations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">6.1.</a>&nbsp;
+XML Namespace<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">6.2.</a>&nbsp;
+EPP Extension Registry<br />
+<a href="#rfc.references1">7.</a>&nbsp;
+Normative References<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Authors' Addresses<br />
+</p>
+<br clear="all" />
+
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>The Extensible Provisioning Protocol (EPP) provides a way for clients to create and update objects in a central repository. Usually, the commands that a client sends to a server will have been initiated upon request of a human being. As a result, occasionally a command is sent which contains an error.
+</p>
+<p>EPP clients have some options to remedy such mistakes: for example, they can send a &lt;delete&gt; command to delete an object created in error (and may receive a refund if they do so within some grace period), cancel a previous &lt;transfer&gt; request, or send an &lt;update&gt; command to amend the properties of an object.
+</p>
+<p>However, there are some circumstances where it is not possible to correct an error by using an existing command. For example, despite EPP's built-in idempotency protections, clients may inadvertently send multiple &lt;renew&gt; commands (because their implementation queries the server for a domain's expiry date, thereby defeating the idempotency measures built into EPP) or specify an incorrect period (e.g. a two-year renewal which should have only been for one year).
+</p>
+<p>As another example, a client may perform an &lt;update&gt; command on an object, but keep no record of the previous state of the object, preventing them from correcting the error.
+</p>
+<p>The extension described in this document attempts to provide an additional remedy for such cases, by providing a way for a client to request that a previous command be reversed. In order to reverse a command, the client need only record the &lt;svTRID&gt; returned by the server in its response.
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
+Conventions Used in This Document</h3>
+
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in 
+    <a class='info' href='#RFC2119'>RFC 2119<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a> [RFC2119].
+</p>
+<p>XML is case sensitive. Unless stated otherwise, XML specifications and examples provided in this document MUST be interpreted in the character case presented in order to develop a conforming implementation.
+</p>
+<p>"reverse" is used as an abbreviation for "urn:ietf:params:xml:ns:reverse-0.1". The XML namespace prefix "reverse" is used, but implementations MUST NOT depend on it and instead employ a proper namespace-aware XML parser and serializer to interpret and output the XML documents.
+</p>
+<p>(Note to RFC Editor: remove the following paragraph before publication as an RFC.)
+</p>
+<p>The XML namespace prefix above contains a version number, specifically "0.1". This version number will increment with successive versions of this document, and will reach 1.0 if and when this document is published as an RFC. This permits clients to distinguish which version of the extension a server has implemented.
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Extension Elements</h3>
+
+<p>This specification provides a new EPP command, called &lt;reverse&gt;. As the set of EPP command verbs cannot be updated without updating the core EPP specifications, this command is implemented as an extension.
+</p>
+<p>When a client wants to reverse a previous command, it sends an EPP command frame containing only an &lt;extension&gt; element. The &lt;extension&gt; element contains a &lt;reverse&gt; element, which in turn contains the details of the command the client wishes to reverse. The &lt;reverse&gt; element has the following child elements:
+</p>
+<p></p>
+<blockquote class="text"><dl>
+<dt></dt>
+<dd>An OPTIONAL &lt;reason&gt; element which contains a human-readable explanation of why the client is submitting the request. The server MAY require inclusion of a &lt;reason&gt; element depending on its own policy.
+</dd>
+<dt></dt>
+<dd>A &lt;trID&gt; element which uniquely identifies the command that the client wishes to reverse. The &lt;trID&gt; element is derived from the element of the same name in <a class='info' href='#RFC5730'>[RFC5730]<span> (</span><span class='info'>Hollenbeck, S., &ldquo;Extensible Provisioning Protocol (EPP),&rdquo; August&nbsp;2009.</span><span>)</span></a>.
+</dd>
+<dt></dt>
+<dd>An OPTIONAL &lt;clTRID&gt; element that uniquely identifies this command to the server.
+</dd>
+</dl></blockquote>
+
+<p>Example &lt;reverse&gt; request frame:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+C: &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+C: &lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+C:   &lt;extension&gt;
+C:     &lt;reverse xmlns="urn:ietf:params:xml:ns:reverse-0.1"&gt;
+C:       &lt;reason&gt;Reversing an accidental double renewal.&lt;/reason&gt;
+C:       &lt;trID&gt;
+C:         &lt;clTRID&gt;ABC-10001&lt;/clTRID&gt;
+C:         &lt;svTRID&gt;54321-XYZ&lt;/svTRID&gt;
+C:       &lt;/trID&gt;
+C:       &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+C:     &lt;/reverse&gt;
+C:   &lt;/extension&gt;
+C: &lt;/epp&gt;
+</pre></div>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Server Handling of Reverse Commands</h3>
+
+<p>Which commands a server will accept &lt;reverse&gt; commands for is a matter of server policy (which server operators should provide to client operators). If a server acceps a &lt;reverse&gt; command, it MUST respond with a 1000 or 1001 result code. If the server rejects the command, it MUST respond with a 2400 result code.
+</p>
+<p>Servers MUST NOT allow a client to reverse a command that it did not originally submit. Servers SHOULD implement policies that flag &lt;reverse&gt; commands for offline processing where changes might have security implications (such as those which would remove client-assigned status codes, DNSSEC records, etc).
+</p>
+<p>Servers MUST reject a command which reverses a &lt;reverse&gt; command.
+</p>
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Formal Syntax</h3>
+
+<p>An EPP object mapping is specified in XML Schema notation. The formal syntax presented here is a complete schema representation of the object mapping suitable for automated validation of EPP XML instances.
+</p>
+<p>Copyright (c) 2015 IETF Trust and the persons identified as authors of the code. All rights reserved.
+</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+</p>
+<p></p>
+<ul class="text">
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+</li>
+<li>Neither the name of Internet Society, IETF or IETF Trust, nor the names of specific contributors, may be used to endorse or promote products derived from this software without specific prior written permission.
+</li>
+</ul>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+BEGIN
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;schema xmlns="http://www.w3.org/2001/XMLSchema"
+  xmlns:epp="urn:ietf:params:xml:ns:epp-1.0"
+  xmlns:reverse="urn:ietf:params:xml:ns:reverse-0.1"
+  targetNamespace="urn:ietf:params:xml:ns:reverse-0.1"
+  elementFormDefault="qualified"&gt;
+  &lt;annotation&gt;
+    &lt;documentation&gt;
+      Extensible Provisioning Protocol v1.0 extension
+      schema for command reverseal.
+    &lt;/documentation&gt;
+  &lt;/annotation&gt;
+
+  &lt;import
+    namespace="urn:ietf:params:xml:ns:epp-1.0"
+    schemaLocation="epp-1.0.xsd"/&gt;
+
+    &lt;!-- client element --&gt;
+  &lt;element name="reverse" type="reverse:reverseType"/&gt;
+
+  &lt;complexType name="reverseType"&gt;
+    &lt;sequence&gt;
+      &lt;element name="reason" type="epp:msgType"
+        minOccurs="0" /&gt;
+        &lt;element name="trID" type="reverse:trIDType"/&gt;
+        &lt;element name="clTRID" type="epp:trIDStringType"
+          minOccurs="0" /&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+
+  &lt;complexType name="trIDType"&gt;
+    &lt;sequence&gt;
+      &lt;element name="clTRID" type="epp:trIDStringType"
+        minOccurs="0" /&gt;
+      &lt;element name="svTRID" type="epp:trIDStringType" /&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+&lt;/schema&gt;
+END</pre></div>
+<a name="Security"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+Security Considerations</h3>
+
+<p>The mapping extensions described in this document do not provide any security services beyond those described by <a class='info' href='#RFC5730'>EPP<span> (</span><span class='info'>Hollenbeck, S., &ldquo;Extensible Provisioning Protocol (EPP),&rdquo; August&nbsp;2009.</span><span>)</span></a> [RFC5730], and protocol layers used by EPP. The security considerations described in these other specifications apply to this specification as well.
+</p>
+<a name="IANA"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+IANA Considerations</h3>
+
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
+XML Namespace</h3>
+
+<p>This document uses URNs to describe XML namespaces and XML schemas conforming to a registry mechanism described in 
+    <a class='info' href='#RFC3688'>[RFC3688]<span> (</span><span class='info'>Mealling, M., &ldquo;The IETF XML Registry,&rdquo; January&nbsp;2004.</span><span>)</span></a>. The following URI assignment is requested of IANA:
+</p>
+<p>URI: urn:ietf:params:xml:ns:reverse-0.1
+</p>
+<p>Registrant Contact: See the "Author's Address" section of this document.
+</p>
+<p>XML: See the "Formal Syntax" section of this document.
+</p>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
+EPP Extension Registry</h3>
+
+<p>The EPP extension described in this document should be registered by the IANA in the EPP Extension Registry described in 
+    <a class='info' href='#RFC7451'>[RFC7451]<span> (</span><span class='info'>Hollenbeck, S., &ldquo;Extension Registry for the Extensible Provisioning Protocol,&rdquo; February&nbsp;2015.</span><span>)</span></a>. The details of the registration are as follows:
+</p>
+<p>Name of Extension: EPP Reverse Extension
+</p>
+<p>Document status: Standards Track
+</p>
+<p>Reference: (insert reference to RFC version of this document)
+</p>
+<p>Registrant Name and Email Address: See the "Author's Address" section of this document.
+</p>
+<p>TLDs: any
+</p>
+<p>IPR Disclosure: none
+</p>
+<p>Status: active
+</p>
+<p>Notes: none
+</p>
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>7.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
+<td class="author-text">Bradner, S., &ldquo;<a href="http://www.rfc-editor.org/info/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; BCP&nbsp;14, RFC&nbsp;2119, DOI&nbsp;10.17487/RFC2119, March&nbsp;1997.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3688">[RFC3688]</a></td>
+<td class="author-text">Mealling, M., &ldquo;<a href="http://www.rfc-editor.org/info/rfc3688">The IETF XML Registry</a>,&rdquo; BCP&nbsp;81, RFC&nbsp;3688, DOI&nbsp;10.17487/RFC3688, January&nbsp;2004.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5730">[RFC5730]</a></td>
+<td class="author-text">Hollenbeck, S., &ldquo;<a href="http://www.rfc-editor.org/info/rfc5730">Extensible Provisioning Protocol (EPP)</a>,&rdquo; STD&nbsp;69, RFC&nbsp;5730, DOI&nbsp;10.17487/RFC5730, August&nbsp;2009.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC7451">[RFC7451]</a></td>
+<td class="author-text">Hollenbeck, S., &ldquo;<a href="http://www.rfc-editor.org/info/rfc7451">Extension Registry for the Extensible Provisioning Protocol</a>,&rdquo; RFC&nbsp;7451, DOI&nbsp;10.17487/RFC7451, February&nbsp;2015.</td></tr>
+</table>
+
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Authors' Addresses</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Gavin Brown</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">CentralNic Group plc</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">35-39 Moorgate</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">London, England  EC2R 6AR</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">GB</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+44 20 33 88 0600</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:gavin.brown@centralnic.com">gavin.brown@centralnic.com</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="https://www.centralnic.com">https://www.centralnic.com</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Jothan Frakes</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:jothan@jothan.com">jothan@jothan.com</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://jothan.com">http://jothan.com</a></td></tr>
+</table>
+</body></html>
