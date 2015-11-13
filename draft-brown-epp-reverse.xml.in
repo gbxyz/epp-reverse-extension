@@ -111,7 +111,7 @@
 
 <section title="EPP &lt;poll&gt; command">
   <t>Servers which return 1001 response codes to &lt;reverse&gt; commands MUST notify clients of the outcome of the out-of-band process via the EPP message queue. The format of the &lt;poll&gt; message is as follows.</t>
-  <t>The &lt;resData&gt; element of the &lt;poll&gt; response contains a &lt;panData&gt; element which contains a &lt;paTRID&gt; element. This element contains an OPTIONAL &lt;clTRID&gt; and a &gt;svTRID&gt; which together identify the &lt;reverse&gt; command submitted by the client. The &lt;paTRID&gt; element has a MANDATORY "paResult" element which is a boolean, and which indicates the outcome of the offline review.</t>
+  <t>The &lt;resData&gt; element of the &lt;poll&gt; response contains a &lt;panData&gt; element which contains a &lt;paTRID&gt; element. This element contains an OPTIONAL &lt;clTRID&gt; and a &lt;svTRID&gt; which together identify the &lt;reverse&gt; command submitted by the client. The &lt;paTRID&gt; element has a MANDATORY "paResult" element which is a boolean, and which indicates the outcome of the offline review.</t>
   <t>The &lt;msg&gt; element contains a human-readable message describing the outcome of the review.</t>
 
   <t>Example of a &lt;poll&gt; message:</t>
@@ -163,6 +163,10 @@ BEGIN
     <t>Status: active</t>
     <t>Notes: none</t>
   </section>
+</section>
+
+<section title="Acknowledgements">
+  <t>The authors wish to thank Keith Gaughan for early feedback.</t>
 </section>
 
 </middle>

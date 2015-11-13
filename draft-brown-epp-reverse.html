@@ -145,7 +145,7 @@
 <tr><td class="header">Internet Engineering Task Force</td><td class="header">G. Brown</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">CentralNic Group plc</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">J. Frakes</td></tr>
-<tr><td class="header">Expires: May 15, 2016</td><td class="header">November 12, 2015</td></tr>
+<tr><td class="header">Expires: May 16, 2016</td><td class="header">November 13, 2015</td></tr>
 </table></td></tr></table>
 <h1><br />Command Reversal Extension for the Extensible Provisioning Protocol (EPP)<br />draft-brown-epp-reverse-00</h1>
 
@@ -168,7 +168,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on May 15, 2016.</p>
+This Internet-Draft will expire on May 16, 2016.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -207,7 +207,9 @@ IANA Considerations<br />
 XML Namespace<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">7.2.</a>&nbsp;
 EPP Extension Registry<br />
-<a href="#rfc.references1">8.</a>&nbsp;
+<a href="#anchor9">8.</a>&nbsp;
+Acknowledgements<br />
+<a href="#rfc.references1">9.</a>&nbsp;
 Normative References<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Authors' Addresses<br />
@@ -302,7 +304,7 @@ EPP &lt;poll&gt; command</h3>
 
 <p>Servers which return 1001 response codes to &lt;reverse&gt; commands MUST notify clients of the outcome of the out-of-band process via the EPP message queue. The format of the &lt;poll&gt; message is as follows.
 </p>
-<p>The &lt;resData&gt; element of the &lt;poll&gt; response contains a &lt;panData&gt; element which contains a &lt;paTRID&gt; element. This element contains an OPTIONAL &lt;clTRID&gt; and a &gt;svTRID&gt; which together identify the &lt;reverse&gt; command submitted by the client. The &lt;paTRID&gt; element has a MANDATORY "paResult" element which is a boolean, and which indicates the outcome of the offline review.
+<p>The &lt;resData&gt; element of the &lt;poll&gt; response contains a &lt;panData&gt; element which contains a &lt;paTRID&gt; element. This element contains an OPTIONAL &lt;clTRID&gt; and a &lt;svTRID&gt; which together identify the &lt;reverse&gt; command submitted by the client. The &lt;paTRID&gt; element has a MANDATORY "paResult" element which is a boolean, and which indicates the outcome of the offline review.
 </p>
 <p>The &lt;msg&gt; element contains a human-readable message describing the outcome of the review.
 </p>
@@ -467,9 +469,16 @@ EPP Extension Registry</h3>
 </p>
 <p>Notes: none
 </p>
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8"></a><h3>8.&nbsp;
+Acknowledgements</h3>
+
+<p>The authors wish to thank Keith Gaughan for early feedback.
+</p>
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>8.&nbsp;Normative References</h3>
+<h3>9.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
 <td class="author-text">Bradner, S., &ldquo;<a href="http://www.rfc-editor.org/info/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; BCP&nbsp;14, RFC&nbsp;2119, DOI&nbsp;10.17487/RFC2119, March&nbsp;1997.</td></tr>
