@@ -37,19 +37,19 @@
   </complexType>
 
   <!-- poll response element -->
-  <element name="panData" type="reverse:panDataType" />
+  <element name="revData" type="reverse:revDataType" />
 
-  <complexType name="panDataType">
+  <complexType name="revDataType">
     <sequence>
-      <element name="paTRID" type="reverse:paTRIDType" />
-      <element name="paDate" type="dateTime" />
+      <element name="reTRID" type="reverse:reTRIDType" />
+      <element name="reDate" type="dateTime" />
     </sequence>
   </complexType>
 
-  <complexType name="paTRIDType">
+  <complexType name="reTRIDType">
     <complexContent>
       <extension base="reverse:trIDType">
-        <attribute name="paResult" type="boolean" use="required" />
+        <attribute name="reResult" type="boolean" use="required" />
       </extension>
     </complexContent>
   </complexType>

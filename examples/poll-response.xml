@@ -9,14 +9,14 @@
       <msg>Pending action completed successfully.</msg>
     </msgQ>
     <resData>
-      <reverse:panData
+      <reverse:revData
         xmlns:reverse="urn:ietf:params:xml:ns:reverse-0.1">
-        <reverse:paTRID paResult="1">
+        <reverse:reTRID reResult="1">
           <reverse:clTRID>ABC-12345</reverse:clTRID>
           <reverse:svTRID>54321-XYZ</reverse:svTRID>
-        </reverse:paTRID>
-        <reverse:paDate>2016-04-04T22:00:00.0Z</reverse:paDate>
-      </reverse:panData>
+        </reverse:reTRID>
+        <reverse:reDate>2016-04-04T22:00:00.0Z</reverse:reDate>
+      </reverse:revData>
     </resData>
     <trID>
       <clTRID>BCD-23456</clTRID>

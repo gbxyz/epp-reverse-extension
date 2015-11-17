@@ -110,6 +110,10 @@ C: &lt;/epp&gt;
 <section title="Server Handling of Reverse Commands">
   <t>Which commands a server will accept &lt;reverse&gt; commands for is a matter of server policy (which server operators should provide to client operators). If a server acceps a &lt;reverse&gt; command, it MUST respond with a 1000 or 1001 result code. If the server returns a 1001 response, the client MUST be notified of outcome of the offline process via the EPP message queue. If the server rejects the command, it MUST respond with a 2400 result code.</t>
 
+  <t>Servers MUST NOT perform partial reversals of client commands. If the command cannot be reversed atomically and in full, the server MUST send a 2400 response back to the client.</t>
+
+  <t>If a server cannot perform a reversal of a client command because of a subsequent update, then it MUST send a 2400 response back to the client.</t>
+
   <t>Servers MUST NOT allow a client to reverse a command that it did not originally submit. Servers SHOULD implement policies that flag &lt;reverse&gt; commands for offline processing where changes might have security implications (such as those which would remove client-assigned status codes, alter authorisation information or add or remove <xref target="RFC5910">secDNS</xref> records, etc).</t>
 
   <t>Servers MUST reject a command which attempts to reverse a &lt;reverse&gt; command.</t>
@@ -117,7 +121,7 @@ C: &lt;/epp&gt;
 
 <section title="EPP &lt;poll&gt; command">
   <t>Servers which return 1001 response codes to &lt;reverse&gt; commands MUST notify clients of the outcome of the out-of-band process via the EPP message queue. The format of the &lt;poll&gt; message is as follows.</t>
-  <t>The &lt;resData&gt; element of the &lt;poll&gt; response contains a &lt;panData&gt; element which contains a &lt;paTRID&gt; element. This element contains an OPTIONAL &lt;clTRID&gt; and a &lt;svTRID&gt; which together identify the &lt;reverse&gt; command submitted by the client. The &lt;paTRID&gt; element has a MANDATORY "paResult" element which is a boolean, and which indicates the outcome of the offline review.</t>
+  <t>The &lt;resData&gt; element of the &lt;poll&gt; response contains a &lt;revData&gt; element which contains a &lt;reTRID&gt; element and a &lt;reDate&gt; element. The &lt;reTRID&gt; element contains an OPTIONAL &lt;clTRID&gt; and a &lt;svTRID&gt; element, which together identify the &lt;reverse&gt; command submitted by the client. The &lt;reTRID&gt; element has a MANDATORY "reResult" element which is a boolean, and which indicates the outcome of the offline review. The &lt;revData&gt; may also contain an OPTIONAL &lt;reDate&gt; element which contains the date and time when the offline review was completed.</t>
   <t>The &lt;msg&gt; element contains a human-readable message describing the outcome of the review.</t>
 
   <t>Example of a &lt;poll&gt; message:</t>
@@ -135,14 +139,14 @@ C:       &lt;qDate&gt;2016-04-04T22:01:00.0Z&lt;/qDate&gt;
 C:       &lt;msg&gt;Pending action completed successfully.&lt;/msg&gt;
 C:     &lt;/msgQ&gt;
 C:     &lt;resData&gt;
-C:       &lt;reverse:panData
+C:       &lt;reverse:revData
 C:         xmlns:reverse="urn:ietf:params:xml:ns:reverse-0.1"&gt;
-C:         &lt;reverse:paTRID paResult="1"&gt;
+C:         &lt;reverse:reTRID reResult="1"&gt;
 C:           &lt;reverse:clTRID&gt;ABC-12345&lt;/reverse:clTRID&gt;
 C:           &lt;reverse:svTRID&gt;54321-XYZ&lt;/reverse:svTRID&gt;
-C:         &lt;/reverse:paTRID&gt;
-C:         &lt;reverse:paDate&gt;2016-04-04T22:00:00.0Z&lt;/reverse:paDate&gt;
-C:       &lt;/reverse:panData&gt;
+C:         &lt;/reverse:reTRID&gt;
+C:         &lt;reverse:reDate&gt;2016-04-04T22:00:00.0Z&lt;/reverse:reDate&gt;
+C:       &lt;/reverse:revData&gt;
 C:     &lt;/resData&gt;
 C:     &lt;trID&gt;
 C:       &lt;clTRID&gt;BCD-23456&lt;/clTRID&gt;
@@ -206,19 +210,19 @@ BEGIN
   &lt;/complexType&gt;
 
   &lt;!-- poll response element --&gt;
-  &lt;element name="panData" type="reverse:panDataType" /&gt;
+  &lt;element name="revData" type="reverse:revDataType" /&gt;
 
-  &lt;complexType name="panDataType"&gt;
+  &lt;complexType name="revDataType"&gt;
     &lt;sequence&gt;
-      &lt;element name="paTRID" type="reverse:paTRIDType" /&gt;
-      &lt;element name="paDate" type="dateTime" /&gt;
+      &lt;element name="reTRID" type="reverse:reTRIDType" /&gt;
+      &lt;element name="reDate" type="dateTime" /&gt;
     &lt;/sequence&gt;
   &lt;/complexType&gt;
 
-  &lt;complexType name="paTRIDType"&gt;
+  &lt;complexType name="reTRIDType"&gt;
     &lt;complexContent&gt;
       &lt;extension base="reverse:trIDType"&gt;
-        &lt;attribute name="paResult" type="boolean" use="required" /&gt;
+        &lt;attribute name="reResult" type="boolean" use="required" /&gt;
       &lt;/extension&gt;
     &lt;/complexContent&gt;
   &lt;/complexType&gt;
@@ -255,7 +259,16 @@ END</artwork>
 </section>
 
 <section title="Acknowledgements">
-  <t>The authors wish to thank Keith Gaughan for early feedback.</t>
+  <t>The authors wish to thank Keith Gaughan and James Gould for early feedback.</t>
+</section>
+
+<section title="Change History">
+  <section title="Changes from 00 to 01">
+    <t><list style="numbers">
+      <t>Renamed the panData, paTRID, paDate and paResult elements/attributes to revData, reTRID, reDate and reResult, respectively.</t>
+      <t>Added text to the effect that reversals cannot be partial and must be atomic.</t>
+    </list></t>
+  </section>
 </section>
 
 </middle>
